@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function JobDisplayBox({page, results_per_page, what}) {
+export default function JobDisplayBox({page, results_per_page, what, onSave}) {
     const [jobs, setJobs] = useState();
 
     let api = `http://api.adzuna.com/v1/api/jobs/us/search/${page}?app_id=${process.env.REACT_APP_APP_ID}&app_key=${process.env.REACT_APP_APP_KEY}&results_per_page=${results_per_page}&what=${what}&content-type=application/json`;
@@ -25,6 +25,7 @@ export default function JobDisplayBox({page, results_per_page, what}) {
                 {job.salary_min == job.salary_max ? <p>salary: ${job.salary_min.toLocaleString()}</p> : <p>salary: ${job.salary_min.toLocaleString()}-{job.salary_max.toLocaleString()}</p>}
                 <p>type: {job.contract_type}</p>
                 <p>location: {job.location.display_name}</p>
+                <button onClick={onSave}>Save</button>
             </div>
         ))}
     </>
