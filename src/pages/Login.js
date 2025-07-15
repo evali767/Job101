@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { auth } from "../firebase";
+import { auth, provider } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { signInWithPopup } from 'firebase/auth';
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -17,13 +18,27 @@ function Login() {
     }
   };
 
+const loginWithGoogle = async () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        console.log('Logged in user:', user);
+        navigate("/dashboard");
+
+    })
+    .catch((error) => {
+      console.error('Login error:', error.message);
+    });
+  };
+
   return (
     <div className="login-container"> 
       <h2>Login</h2>
       <input placeholder="Email" onChange={e => setEmail(e.target.value)} />
       <input type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
       <button onClick={handleLogin}>Log In</button>
-      <p>Don't have an account? <a href="/signup">Sign Up</a></p>
+      <button onClick={loginWithGoogle}>Login with Google</button>
+      <p>Don't have an account? <a href="/Signup">Sign Up</a></p>
     </div>
   );
 }

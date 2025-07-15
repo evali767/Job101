@@ -85,7 +85,7 @@ body {
 }
 
 /* dashboard */
-.dashboard {
+.dashboard, .calendar, .jobsearch {
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
@@ -458,10 +458,34 @@ button:hover {
   margin: 0;
 }
 
+/* search and filter on dashboard */
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
 
+}
 
+.search-filter-container {
+  display: flex;
+  gap: 10px;
+  flex-grow: 1;
+}
 
+.search-input {
+  padding: 8px 12px;
+  border: 1px solid lightgray;
+  border-radius: 4px;
+  flex-grow: 1;
+  max-width: 400px;
+}
 
-
-
-
+.status-filter {
+  padding: 8px 12px;
+  border: 1px solid lightgray;
+  border-radius: 4px;
+  background-color: white;
+}
