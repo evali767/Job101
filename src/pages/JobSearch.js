@@ -4,11 +4,11 @@ import Navbar from '../components/Navbar';
 import JobDisplayBox from '../components/JobDisplayBox';
 import { Dropdown, DropdownButton, DropdownItem, DropdownItems } from '../components/Dropdown';
 
-const resultsPerPageOptions = [10, 20, 30, 40, 50];
+const resultsPerPageOptions = [5, 10, 20, 30, 40, 50];
 
 export default function Calendar() {
   const [input, setInput] = useState("js developer");
-  const [resultsPerPage, setResultsPerPage] = useState(20);
+  const [resultsPerPage, setResultsPerPage] = useState(5);
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
