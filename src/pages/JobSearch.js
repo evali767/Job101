@@ -2,9 +2,13 @@ import { useState } from 'react';
 
 import Navbar from '../components/Navbar';
 import JobDisplayBox from '../components/JobDisplayBox';
+import { Dropdown, DropdownButton, DropdownItem, DropdownItems } from '../components/Dropdown';
+
+const resultsPerPageOptions = [10, 20, 30, 40, 50];
 
 export default function Calendar() {
   const [input, setInput] = useState("js developer");
+  const [resultsPerPage, setResultsPerPage] = useState(20);
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
@@ -18,8 +22,16 @@ export default function Calendar() {
       <h1>Search for Jobs</h1>
       <div style={styles.container}>
         <input type="text" name="Search box" style={styles.input} onKeyDown={(e) => handleKeyDown(e)}/>
+        <Dropdown>
+          <DropdownButton>{resultsPerPage} / page</DropdownButton>
+              <DropdownItems>
+                {resultsPerPageOptions.map((option) => 
+                  <DropdownItem key={option} onClick={() => setResultsPerPage(option)}> {option} </DropdownItem>
+                )}
+              </DropdownItems>
+        </Dropdown>
       </div>
-      <JobDisplayBox page="1" results_per_page="20" what={input} />
+      <JobDisplayBox page="1" results_per_page={resultsPerPage} what={input} />
     </div>
   );
 }
