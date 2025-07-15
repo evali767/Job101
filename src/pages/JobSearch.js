@@ -1,35 +1,42 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+
 import Navbar from '../components/Navbar';
+import JobDisplayBox from '../components/JobDisplayBox';
 
 export default function Calendar() {
-  const [jobs, setJobs] = useState();
+  const [input, setInput] = useState("js developer");
 
-  console.log(process.env.REACT_APP_APP_KEY);
-    let api = `http://api.adzuna.com/v1/api/jobs/gb/search/1?app_id=${process.env.REACT_APP_APP_ID}&app_key=${process.env.REACT_APP_APP_KEY}&results_per_page=20&what=javascript%20developer&content-type=application/json`;
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      setInput(e.target.value);
+    }
+  };
 
-
-    useEffect(() => {
-      try {
-        const fetchJobs = async () => {
-          const response = await fetch(api);
-          const json = await response.json();
-          setJobs(json);
-        }
-
-        fetchJobs();
-      } catch { }
-    }, [api]);
-
-    return (
-      <div className="jobsearch">
-        <Navbar />
-        <h1>Search for Jobs</h1>
-        {jobs && jobs.results.map((stat, index) => (
-            <div key={index} className="stat-card">
-              <h3>{stat.value}</h3>
-              <p>{stat.title}</p>
-            </div>
-          ))}
+  return (
+    <div className="jobsearch">
+      <Navbar />
+      <h1>Search for Jobs</h1>
+      <div style={styles.container}>
+        <input type="text" name="Search box" style={styles.input} onKeyDown={(e) => handleKeyDown(e)}/>
       </div>
-    );
-  }
+      <JobDisplayBox page="1" results_per_page="20" what={input} />
+    </div>
+  );
+}
+
+const styles = {
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  input: {
+    width: '40%',
+    height: '50px',
+    fontSize: '1.5rem',
+    padding: '0 15px',
+    borderRadius: '8px',
+    border: '2px solid #999',
+    outline: 'none',
+  },
+};
