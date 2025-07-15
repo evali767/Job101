@@ -112,10 +112,10 @@ export default function Dashboard({ applications }) {
                                         View Job Posting
                                     </a>
                                 )}
-                                <p className={`status ${app.status.toLowerCase()}`}>
+                                <p id="dashstatus" className={`status ${app.status.toLowerCase()}`}>
                                     {app.status}
                                 </p>
-                                <p>Applied: {app.date}</p>
+                                <p>Date Applied: {app.date}</p>
                                 <Link
                                     to={`/application/${app.id}/notes`}
                                     className="notes-button"

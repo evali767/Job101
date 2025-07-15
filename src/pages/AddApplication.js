@@ -1,6 +1,6 @@
 // page to add new job application to track
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 
 // receive setApplications as a prop so that main applications list can be updated when new one is added
@@ -8,15 +8,17 @@ export default function AddApplication({ setApplications }) {
     // state management
     // naviagte function to change routes
     const navigate = useNavigate();
+    const location = useLocation();
     // initial values of form fields
+    const jobData = location.state || {};
+
     const [formData, setFormData] = useState({
         company: '',
-        position: '',
+        position: jobData.position || '',  // if coming from job search pg, there will be a job position
         status: 'Apply',
-        date: new Date().toISOString().split('T')[0],
-        link: ''
+        date: '',
+        link: jobData.link || ''  // if coming from job search pg, there will be a job link
     });
-
     const handleSubmit = (e) => {
         e.preventDefault();
         const newApplication = {
@@ -79,7 +81,7 @@ export default function AddApplication({ setApplications }) {
                 </div>
 
                 <div className="form-group">
-                    <label>Date:</label>
+                    <label>Date Applied:</label>
                     <input
                         type="date"
                         value={formData.date}
