@@ -22,11 +22,11 @@ function App() {
   return (
     <Router>
       <div className="app">
-        {isLoggedIn && <Navbar />}
+        {/* {isLoggedIn && <Navbar />} */}
         <Routes>
-          <Route path="/" element={
+          {/* <Route path="/" element={
             <Login onLogin={() => setIsLoggedIn(true)} />
-          } />
+          } /> */}
           <Route path="/dashboard" element={<Dashboard applications={applications} />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/jobsearch" element={<JobSearch />} />
