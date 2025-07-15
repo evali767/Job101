@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // page componenets
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import Navbar from './components/Navbar';
 import Dashboard from "./pages/Dashboard";
 import Calendar from "./pages/Calendar";
@@ -29,6 +30,7 @@ function App() {
             <Login onLogin={() => setIsLoggedIn(true)} />
           } /> */}
           <Route path="/dashboard" element={<Dashboard applications={applications} />} />
+          <Route path="/signup" element={<Signup/>} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/jobsearch" element={<JobSearch />} />
           <Route
