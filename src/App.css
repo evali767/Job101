@@ -1,33 +1,39 @@
 /* site body */
 body {
   font-family: 'Arial', sans-serif;
-  margin: 0;
+  margin-top: 0;
   padding: 0;
-  background-color: white;
-  /* background-color: black; */
-  color: black;
+  background-color: #f5f7fa;
+  color: #1b1919;
+  line-height: 1.6;
 }
 
 /* navbar */
 .navbar {
-  background-color: blue;
+  background-color: #2c68ea;
   padding: 1rem 2rem;
   display: flex;
-  gap: 1.5rem;
+  /* spacing between buttons in nav bar */
+  gap: 1.5rem;  
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* styles links in navbar */
 .navbar a {
   color: white;
-  /* get rid of underline from link */
   text-decoration: none;
-  padding: 0.5rem;
-  border-radius: 4px;
-  transition: background-color 0.3s;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  /* hover animation */
+  transition: all 0.3s ease;
+  font-weight: 500;
 }
 
 .navbar a:hover {
-  background-color: #34495e;
+  background-color: #1d4ed8;
+  /* lift effect */
+  transform: translateY(-2px);
 }
 
 /* login page */
@@ -36,53 +42,58 @@ body {
   margin: 5rem auto;
   padding: 2.5rem;
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 5px 10px gray;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(31, 31, 31, 0.1);
   text-align: center;
 }
-
 
 /* email and password input boxes */
 .login-container input {
   width: 100%;
   padding: 0.8rem;
   margin: 0.5rem 0;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: 1px solid lightgray;
+  border-radius: 8px;
   box-sizing: border-box;
   font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.login-container input:focus {
+  border-color: blue;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(81, 128, 230, 0.1);
 }
 
 .login-container button {
   width: 100%;
   padding: 0.8rem;
   margin-top: 1rem;
-  background-color: #3498db;
+  background-color: blue;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
-  transition: background-color 0.3s;
+  transition: all 0.3s;
 }
 
 .login-container button:hover {
-  background-color: #2980b9;
+  background-color: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-
 
 /* dashboard */
 .dashboard {
   padding: 2rem;
-}
-
-.dashboard h1 {
-  color: #2c3e50;
-  margin-bottom: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .stats-grid {
   display: grid;
+  /* columns at least 200px wide, but can expand equally to fill space */
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1.5rem;
 }
@@ -90,13 +101,367 @@ body {
 .stat-card {
   background: white;
   padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
 
 .stat-card h3 {
   font-size: 2rem;
-  color: #3498db;
+  color: #2563eb;
   margin: 0 0 0.5rem;
 }
+
+/* add application page */
+.add-application {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.add-application form {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* add margin to buttom of each section */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #2563eb;
+  outline: none;
+  box-shadow: 0 0 0 2px #6da5e4;
+}
+
+button {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+button:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* dashboard: applications list*/
+.applications-list {
+  margin-top: 2rem;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+
+.add-button {
+  background: #10b981;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.add-button:hover {
+  background: #0d9f6e;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.application-card {
+  background: white;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s;
+  border-left: 4px solid #2563eb;
+  position: relative;
+}
+
+.application-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.application-card h3 {
+  color: #1e293b;
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+}
+
+
+.status {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  /* margin-left: 20px; */
+}
+
+
+.status.apply {
+  background: #e8f5e9;
+  color: #a5b706;
+}
+
+
+.status.applied {
+  background: #f4e8f5;
+  color: #853d99;
+}
+
+.status.interview {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.status.rejected {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.status.offer {
+  background: #e8f5e9;
+  color: #2e7d32;
+  font-weight: bold;
+}
+
+
+/* application details */
+.application-detail {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.detail-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+.detail-view strong {
+
+  color: #3860a6;
+  font-weight: 600;
+}
+
+.action-buttons {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+}
+
+/* notes layout */
+.application-notes {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.notes-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+.notes-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.note-card {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #2563eb;
+}
+
+/* date shows upper right corner */
+.note-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.note-header h3 {
+  margin: 0;
+  color: #1e293b;
+}
+
+.note-date {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.note-content {
+  display: grid;
+  /* display notes and important next to each other */
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.note-body, .note-important {
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.note-body h4, .note-important h4, .note-todo h4 {
+  margin-top: 0;
+  color: #2563eb;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+}
+
+.note-todo {
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+}
+
+.new-note-form {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 1px dashed #cbd5e1;
+}
+
+.new-note-form h2 {
+  margin-top: 0;
+  color: #1e293b;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.back-button {
+  margin-top: 1.5rem;
+  background: #64748b;
+}
+
+.back-button:hover {
+  background: #475569;
+}
+
+/* buttons on application listing */
+.application-card a {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  margin: 0;
+  background-color: #2563eb;
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  border: none;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.application-card a:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* company name link */
+.application-card h3 a {
+  background-color: #10b981;
+}
+
+.application-card h3 a:hover {
+  background-color: #0d9f6e;
+}
+
+/* job link */
+.job-link {
+  display: inline-block;
+  padding: 0.3rem 0.7rem; 
+  background-color: #63a2ee;
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  border-radius: 6px;
+  font-size: 0.9rem; 
+  transition: all 0.3s ease;
+  margin-left: 0.5rem;
+}
+
+.job-link:hover {
+  background-color: #8f8ae8;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.notes-button {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  margin: 0;
+}
+
+
+
+
+
+
+
+
