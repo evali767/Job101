@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Navbar from './components/Navbar';
 import Dashboard from "./pages/Dashboard";
 import Calendar from "./pages/Calendar";
+import JobSearch from "./pages/JobSearch";
 
 import './App.css'; 
 
@@ -21,6 +22,7 @@ function App() {
           } />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/calendar" element={<Calendar />} />
+          <Route path="/jobsearch" element={<JobSearch />} />
         </Routes>
       </div>
     </Router>

@@ -5,8 +5,8 @@ export default function Navbar() {
   return (
     <nav className="navbar">
       <Link to="/dashboard">Dashboard</Link>
-      <Link to="/applications">Applications</Link>
       <Link to="/calendar">Calendar</Link>
+      <Link to="/jobsearch">Job Search</Link>
       <Link to="/" onClick={() => alert("Will implement logout later")}>
         Logout
       </Link>
