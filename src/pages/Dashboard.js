@@ -11,7 +11,7 @@ export default function Dashboard({ applications }) {
     const stats = [
         { title: "Total Applications", value: applications.length },
         {
-            title: "Need to Apply",
+            title: "Apply",
             value: applications.filter(app => app.status === "Apply").length
         },
         {

@@ -22,6 +22,7 @@ function App() {
   return (
     <Router>
       <div className="app">
+        <Navbar/>
         {/* {isLoggedIn && <Navbar />} */}
         <Routes>
           {/* <Route path="/" element={

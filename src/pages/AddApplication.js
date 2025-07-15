@@ -12,7 +12,7 @@ export default function AddApplication({ setApplications }) {
     const [formData, setFormData] = useState({
         company: '',
         position: '',
-        status: 'Applied',
+        status: 'Apply',
         date: new Date().toISOString().split('T')[0],
         link: ''
     });
@@ -70,7 +70,7 @@ export default function AddApplication({ setApplications }) {
                         value={formData.status}
                         onChange={(e) => setFormData({ ...formData, status: e.target.value })}
                     >
-                        <option value="Apply">Need to Apply</option>
+                        <option value="Apply">Apply</option>
                         <option value="Applied">Applied</option>
                         <option value="Interview">Interview</option>
                         <option value="Rejected">Rejected</option>
