@@ -22,9 +22,9 @@ export default function JobDisplayBox({page, results_per_page, what, onSave}) {
         {jobs && jobs.results.map((job, index) => (
             <div key={index} className="stat-card">
                 <a href={job.redirect_url}><p>{job.title}</p></a>
-                {job.salary_min == job.salary_max ? <p>salary: ${job.salary_min.toLocaleString()}</p> : <p>salary: ${job.salary_min.toLocaleString()}-{job.salary_max.toLocaleString()}</p>}
-                <p>type: {job.contract_type}</p>
-                <p>location: {job.location.display_name}</p>
+                {job.salary_min == job.salary_max ? <p>Salary: ${job.salary_min.toLocaleString()}</p> : <p>salary: ${job.salary_min.toLocaleString()}-{job.salary_max.toLocaleString()}</p>}
+                <p>Type: {job.contract_type || 'N/A'}</p>
+                <p>Location: {job.location.display_name}</p>
                 <button onClick={onSave}>Save</button>
             </div>
         ))}
