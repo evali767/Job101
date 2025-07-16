@@ -29,9 +29,9 @@ export default function Calendar() {
   console.log(accessToken);
   let navigate = useNavigate();
 
-  useEffect(( navigate ) => {
-      if (accessToken) {
-        const fetchAllCalendarEvents = async () => {
+  useEffect((navigate) => {
+    if (accessToken) {
+      const fetchAllCalendarEvents = async () => {
         try {
           // Get all calendars
           const calendarsResponse = await fetch('https://www.googleapis.com/calendar/v3/users/me/calendarList', {
@@ -51,38 +51,38 @@ export default function Calendar() {
 
             params.append('timeZone', Intl.DateTimeFormat().resolvedOptions().timeZone);
 
-            
+
             // Add search query if provided
             if (input.trim()) {
               params.append('q', input);
             }
 
             console.log(params);
-            
+
             return `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events?${params}`;
           };
 
           // Fetch all calendar events in parallel
-          const eventPromises = calendars.items.map(calendar => 
+          const eventPromises = calendars.items.map(calendar =>
             fetch(buildEventUrl(calendar.id), {
               headers: { 'Authorization': "Bearer " + accessToken }
             })
-            .then(response => response.json())
-            .then(events => events.items || [])
-            .catch(error => {
-              console.error(`Error fetching calendar ${calendar.summary}:`, error);
-              return [];
-            })
+              .then(response => response.json())
+              .then(events => events.items || [])
+              .catch(error => {
+                console.error(`Error fetching calendar ${calendar.summary}:`, error);
+                return [];
+              })
           );
 
           // Wait for all requests to complete
           const eventArrays = await Promise.all(eventPromises);
-          
+
           // Flatten all events into one array
           const allEvents = eventArrays.flat();
-          
+
           console.log(`Total events found: ${allEvents.length}`);
-          
+
           // Sort events by start time
           allEvents.sort((a, b) => {
             const dateA = new Date(a.start?.dateTime || a.start?.date);
@@ -91,9 +91,9 @@ export default function Calendar() {
           });
 
           const limitedEvents = allEvents.slice(0, maxResults);
-          
+
           setEvents(limitedEvents);
-          
+
         } catch (error) {
           navigate("/");
         }
@@ -109,38 +109,39 @@ export default function Calendar() {
     navigate("/add-event")
   }
 
-    return (
-      <div className="calendar">
-        <Navbar />
-        <h1>Calendar</h1>
-        <div className="calendar-placeholder">
-          <div style={styles.container}>
-            <input type="text" name="Search box" style={styles.input} onKeyDown={(e) => handleKeyDown(e)}/>
-          </div>
-          <DatePicker onDateRangeChange={(start, end) => { setStartDate(start); setEndDate(end); }} />
-            <Dropdown>
-              <DropdownButton>{maxResults} / page</DropdownButton>
-              <DropdownItems>
-                {maxResultsOptions.map((option) => (
-                  <DropdownItem onClick={() => setMaxResults(option)}>
-                    {option}
-                  </DropdownItem>
-                ))}
-              </DropdownItems>
-            </Dropdown>
-            <button className="action-btn" onClick={handleSubmitEvent}>Create event</button>
-          <div className="mock-event">
-            {events.map((event, index) => (
-              <div key={index} className="stat-card"> 
-                <p><strong>{event.summary}</strong></p>
-                <p>{event.start.date ? event.start.date : event.start.dateTime }</p>
-              </div>)
-            )}
-          </div>
+
+  return (
+    <div className="calendar">
+      <Navbar />
+      <h1>Calendar</h1>
+      <div className="calendar-placeholder">
+        <div style={styles.container}>
+          <input type="text" name="Search box" style={styles.input} onKeyDown={(e) => handleKeyDown(e)} />
+        </div>
+        <DatePicker onDateRangeChange={(start, end) => { setStartDate(start); setEndDate(end); }} />
+        <Dropdown>
+          <DropdownButton>{maxResults} / page</DropdownButton>
+          <DropdownItems>
+            {maxResultsOptions.map((option) => (
+              <DropdownItem onClick={() => setMaxResults(option)}>
+                {option}
+              </DropdownItem>
+            ))}
+          </DropdownItems>
+        </Dropdown>
+        <button className="action-btn" onClick={handleSubmitEvent}>Create event</button>
+        <div className="mock-event">
+          {events.map((event, index) => (
+            <div key={index} className="stat-card">
+              <p><strong>{event.summary}</strong></p>
+              <p>{event.start.date ? event.start.date  : event.start.dateTime.slice(0, -6).replace('T', " --- Start Time: ") }</p>
+            </div>)
+          )}
         </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
 const styles = {
   container: {
