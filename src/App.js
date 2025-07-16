@@ -15,9 +15,9 @@ import ApplicationNotes from './pages/ApplicationNotes';
 import './App.css';
 
 function App() {
-  // state management
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // store applicatons here, empty at first
+  
   const [applications, setApplications] = useState([]);
 
   return (
