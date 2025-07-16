@@ -13,6 +13,7 @@ import ApplicationDetail from './pages/ApplicationDetail';
 import ApplicationNotes from './pages/ApplicationNotes';
 
 import './App.css';
+import AddEvent from './pages/AddEvent';
 
 function App() {
   // state management
@@ -35,6 +36,10 @@ function App() {
           <Route
             path="/add-application"
             element={<AddApplication setApplications={setApplications} />}
+          />
+          <Route
+            path="/add-event"
+            element={<AddEvent />}
           />
           <Route
             path="/application/:id"
