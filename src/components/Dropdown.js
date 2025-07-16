@@ -55,6 +55,7 @@ export function DropdownButton({ children }) {
         cursor: "pointer",
         border: "none",
         transition: "background-color 0.2s ease-in-out",
+        margin: "0 0 15px 0",
       }}
       onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#1D4ED8")} // blue-700
       onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#2563EB")}
