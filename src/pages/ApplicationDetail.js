@@ -1,38 +1,64 @@
 // view application details -- user sees this after clicking on company name of job posting
-import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import { auth, db } from "../firebase";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 
-export default function ApplicationDetail({ applications, setApplications }) {
-  const { id } = useParams();   //gets ID from URL
-  const navigate = useNavigate();
-  const app = applications.find(a => a.id === Number(id)); //find current application by matching ID
+export default function ApplicationDetail( ) {
+  const { id } = useParams();
+  const [company, setCompany] = useState("");
+  const [position, setPosition] = useState("");
+  const [status, setStatus] = useState("")
+  const [link, setLink] = useState("")
+  const [date, setDate] = useState("")
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState(app);
+  
+  const navigate = useNavigate();
 
   // updates job application info by replacing old entry with new formData
-  const handleSave = () => {
-    setApplications(applications.map(a =>
-      a.id === Number(id) ? formData : a
-    ));
-    setIsEditing(false); //exit editing mode when done
-  };
+  useEffect(()=>{
+          const fetchData = onAuthStateChanged(auth, async (user) => {
+              try{
+                  const user = auth.currentUser;
+                  const document = await getDoc(doc(db, "users", user.uid, "aplications", id));
+                  const data = document.data()
+
+                  setCompany(data.company)
+                  setPosition(data.position)
+                  setStatus(data.status)
+                  setLink(data.link)
+                  setDate(data.date)
+                  setIsEditing(false)
+                  }catch(error){
+                  console.error("Error getting application data", error);
+              };
+          });
+          return () => fetchData();
+      }, [id]);
 
 
   // updates form fields: takes event e and extracts name + value from the changed input
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  };
+      const handleSave = async (e) => {
+          e.preventDefault();
+  
+        const user = auth.currentUser
+        try{
+          await setDoc(doc(db, "users", user.uid, "aplications", id), {company:company, position:position, status:status, link:link, date:date})
+          setIsEditing(false)
+        }catch(error){
+          alert("updating data error" , error)
+        }
+        
+          
+      };
 
   return (
     <div className="application-detail">
       <Navbar />
       <div className="detail-container">
-        <h1>{app.company}</h1>
+        <h1>{company}</h1>
 
         {/* edit mode */}
         {isEditing ? (
@@ -41,16 +67,16 @@ export default function ApplicationDetail({ applications, setApplications }) {
               <label>Company:</label>
               <input
                 name="company"
-                value={formData.company}
-                onChange={handleChange}
+                value={company}
+                onChange={(e) =>  setCompany(e.target.value )}
               />
             </div>
             <div className="form-group">
               <label>Position:</label>
               <input
                 name="position"
-                value={formData.position}
-                onChange={handleChange}
+                value={position}
+                onChange={(e) =>  setPosition(e.target.value )}
               />
             </div>
             <div className="form-group">
@@ -58,8 +84,8 @@ export default function ApplicationDetail({ applications, setApplications }) {
               <input
                 type="url"
                 name="link"
-                value={formData.link || ''}
-                onChange={handleChange}
+                value={link || ''}
+                onChange={(e) =>  setLink(e.target.value )}
                 placeholder="https://example.com/job-posting"
               />
             </div>
@@ -67,8 +93,8 @@ export default function ApplicationDetail({ applications, setApplications }) {
               <label>Status:</label>
               <select
                 name="status"
-                value={formData.status}
-                onChange={handleChange}
+                value={status}
+                onChange={(e) =>  setStatus(e.target.value )}
               >
                 <option value="Apply">Apply</option>
                 <option value="Applied">Applied</option>
@@ -82,8 +108,8 @@ export default function ApplicationDetail({ applications, setApplications }) {
               <input
                 type="date"
                 name="date"
-                value={formData.date}
-                onChange={handleChange}
+                value={date}
+                onChange={(e) =>  setDate(e.target.value )}
               />
             </div>
             <div className="action-buttons">
@@ -93,15 +119,15 @@ export default function ApplicationDetail({ applications, setApplications }) {
           </form>
         ) : (
           <div className="detail-view">
-            <p><strong>Position:</strong> {app.position}</p>
-            <p><strong>Status:</strong> {app.status}</p>
-            <p><strong>Date Applied:</strong> {app.date}</p>
+            <p><strong>Position:</strong> {position}</p>
+            <p><strong>Status:</strong> {status}</p>
+            <p><strong>Date Applied:</strong> {date}</p>
             {/* job posting link */}
-            {formData.link && (
+            {link && (
               <p>
                 <strong>Job Posting:</strong>{' '}
                 <a
-                  href={formData.link}
+                  href={link}
                   target="_blank" //open link in new tab
                   rel="noopener noreferrer" //protects against security vulnerbilities
                   className="job-link"

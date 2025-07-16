@@ -286,7 +286,7 @@ button:hover {
 }
 
 #dashstatus {
-  margin-left: 10px;
+  margin-right: 10px;
 }
 
 
@@ -445,6 +445,7 @@ button:hover {
 /* company name link */
 .application-card h3 a {
   background-color: #10b981;
+  font-weight: bold;
 }
 
 .application-card h3 a:hover {
@@ -500,8 +501,7 @@ button:hover {
   padding: 8px 12px;
   border: 1px solid lightgray;
   border-radius: 4px;
-  flex-grow: 1;
-  max-width: 400px;
+  max-width: 75%;
 }
 
 .status-filter {
