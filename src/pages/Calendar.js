@@ -2,10 +2,17 @@ import { useEffect, useState } from "react";
 
 import Navbar from '../components/Navbar';
 import { Navigate, redirect, redirectDocument, useNavigate } from "react-router-dom";
+import DatePicker from "../components/DatePicker";
 
 export default function Calendar() {
   const [events, setEvents] = useState([]);
   const accessToken = localStorage.getItem('googleAccessToken');
+
+  const now = new Date();
+  const maxTime = new Date();
+  maxTime.setDate(now.getDate() + 7);
+  const [startDate, setStartDate] = useState(now.toISOString());
+  const [endDate, setEndDate] = useState(maxTime.toISOString());
 
   const [input, setInput] = useState("");
 
@@ -17,11 +24,6 @@ export default function Calendar() {
 
   console.log(accessToken);
   let navigate = useNavigate();
-
-  const now = new Date();
-  const tenDaysFromNow = new Date();
-  tenDaysFromNow.setDate(now.getDate() + 10);
-  const timeMax = tenDaysFromNow.toISOString();  
 
   useEffect(() => {
       if (accessToken) {
@@ -38,8 +40,8 @@ export default function Calendar() {
             const params = new URLSearchParams({
               singleEvents: 'true',
               orderBy: 'startTime',
-              timeMin: now.toISOString(),
-              timeMax: timeMax,
+              timeMin: startDate,
+              timeMax: endDate,
               maxResults: '10'
             });
             
@@ -47,6 +49,8 @@ export default function Calendar() {
             if (input.trim()) {
               params.append('q', input);
             }
+
+            console.log(params);
             
             return `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events?${params}`;
           };
@@ -90,7 +94,7 @@ export default function Calendar() {
     } else {
       navigate("/");
     }
-  }, [accessToken, input])
+  }, [accessToken, input, startDate, endDate])
 
     return (
       <div className="calendar">
@@ -100,6 +104,7 @@ export default function Calendar() {
           <div style={styles.container}>
             <input type="text" name="Search box" style={styles.input} onKeyDown={(e) => handleKeyDown(e)}/>
           </div>
+          <DatePicker onDateRangeChange={(start, end) => { setStartDate(start); setEndDate(end); }} />
           <div className="mock-event">
             {events.map((event, index) => (
               <div key={index} className="stat-card"> 
