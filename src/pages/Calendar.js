@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import Navbar from '../components/Navbar';
 import { Navigate, redirect, redirectDocument, useNavigate } from "react-router-dom";
 import DatePicker from "../components/DatePicker";
+import { Dropdown, DropdownButton, DropdownItem, DropdownItems } from "../components/Dropdown";
+
+const maxResultsOptions = [5, 10, 20, 40, 50, 100];
 
 export default function Calendar() {
   const [events, setEvents] = useState([]);
@@ -13,6 +16,7 @@ export default function Calendar() {
   maxTime.setDate(now.getDate() + 7);
   const [startDate, setStartDate] = useState(now.toISOString());
   const [endDate, setEndDate] = useState(maxTime.toISOString());
+  const [maxResults, setMaxResults] = useState(10);
 
   const [input, setInput] = useState("");
 
@@ -42,7 +46,7 @@ export default function Calendar() {
               orderBy: 'startTime',
               timeMin: startDate,
               timeMax: endDate,
-              maxResults: '10'
+              maxResults: maxResults + maxResults,
             });
             
             // Add search query if provided
@@ -82,8 +86,10 @@ export default function Calendar() {
             const dateB = new Date(b.start?.dateTime || b.start?.date);
             return dateA - dateB;
           });
+
+          const limitedEvents = allEvents.slice(0, maxResults);
           
-          setEvents(allEvents);
+          setEvents(limitedEvents);
           
         } catch (error) {
           navigate("/");
@@ -94,7 +100,7 @@ export default function Calendar() {
     } else {
       navigate("/");
     }
-  }, [accessToken, input, startDate, endDate])
+  }, [accessToken, input, startDate, endDate, maxResults])
 
     return (
       <div className="calendar">
@@ -105,6 +111,16 @@ export default function Calendar() {
             <input type="text" name="Search box" style={styles.input} onKeyDown={(e) => handleKeyDown(e)}/>
           </div>
           <DatePicker onDateRangeChange={(start, end) => { setStartDate(start); setEndDate(end); }} />
+            <Dropdown>
+              <DropdownButton>{maxResults}</DropdownButton>
+              <DropdownItems>
+                {maxResultsOptions.map((option) => (
+                  <DropdownItem onClick={() => setMaxResults(option)}>
+                    {option}
+                  </DropdownItem>
+                ))}
+              </DropdownItems>
+            </Dropdown>
           <div className="mock-event">
             {events.map((event, index) => (
               <div key={index} className="stat-card"> 
