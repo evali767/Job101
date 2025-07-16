@@ -13,24 +13,9 @@ export default function AddApplication() {
     const [date, setDate] = useState("")
 
     const navigate = useNavigate();
-<<<<<<< HEAD
-    const location = useLocation();
-    // initial values of form fields
-    const jobData = location.state || {};
-
-    const [formData, setFormData] = useState({
-        company: '',
-        position: jobData.position || '',  // if coming from job search pg, there will be a job position
-        status: 'Apply',
-        date: '',
-        link: jobData.link || ''  // if coming from job search pg, there will be a job link
-    });
-    const handleSubmit = (e) => {
-=======
 
 
     const handleAplication = async (e) => {
->>>>>>> backend
         e.preventDefault();
 
       const user = auth.currentUser
