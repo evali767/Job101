@@ -2,7 +2,9 @@ import { useState } from "react";
 import { auth, provider } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { signInWithPopup } from 'firebase/auth';
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+
+export let accessToken = undefined;
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -18,9 +20,18 @@ function Login() {
     }
   };
 
+  const googleProvider = new GoogleAuthProvider();
+  provider.addScope('https://www.googleapis.com/auth/calendar');
+
 const loginWithGoogle = async () => {
     signInWithPopup(auth, provider)
       .then((result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        accessToken = credential.accessToken;
+
+        // stored in local computer, never do this in a real app
+        localStorage.setItem('googleAccessToken', accessToken);
+
         const user = result.user;
         console.log('Logged in user:', user);
         navigate("/dashboard");
