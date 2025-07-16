@@ -103,23 +103,7 @@ export default function Calendar() {
   }, [accessToken, input, startDate, endDate, maxResults])
 
   const handleSubmitEvent = async (event) => {
-    const eventData = {
-        startDateTime: (new Date).toISOString(),
-        endDateTime: (new Date).toISOString(),
-        summary: "summary", // title of the event
-        description: "description",
-        location: "location"
-    };
-
-    try {
-      const { summary, description, startDateTime, endDateTime, location } = eventData;
-      await createCalendarEvent(accessToken, summary, description, startDateTime, endDateTime, location);
-
-      console.log("Event create successfully!");
-    } catch {
-      // redirects to login
-      navigate("/");
-    }
+    navigate("/add-event")
   }
 
     return (
@@ -154,51 +138,6 @@ export default function Calendar() {
       </div>
     );
   }
-
-const createCalendarEvent = async (accessToken, summary, description, startDateTime, endDateTime, location) => {
-  if (!accessToken) {
-    console.error('No access token available');
-    return;
-  }
-
-  const eventData = {
-    summary: summary,
-    description: description,
-    location: location, 
-    start: {
-      dateTime: startDateTime,
-      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    },
-    end: {
-      dateTime: endDateTime, 
-      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    }
-  };
-
-  try {
-    console.log("at: ", accessToken);
-    const response = await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(eventData)
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const createdEvent = await response.json();
-    console.log('Event created successfully:', createdEvent);
-    return createdEvent;
-    
-  } catch (error) {
-    console.error('Error creating event:', error);
-    throw error;
-  }
-};
 
 const styles = {
   container: {
