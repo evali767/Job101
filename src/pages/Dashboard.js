@@ -1,8 +1,35 @@
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import { useEffect, useState } from 'react';
+import { auth, db } from "../firebase";
+import { getDocs, collection } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 
-export default function Dashboard({ applications }) {
+
+export default function Dashboard() {
     // calculate stats from application status data
+    const [applications, setApplications] = useState([]);
+
+    useEffect(()=>{
+        const fetchApplications = onAuthStateChanged(auth, async (user) => {
+            try{
+                const user = auth.currentUser;
+                const documents = await getDocs(collection(db, "users", user.uid, "aplications"));
+
+                const documentsDicts = documents.docs.map( doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                setApplications(documentsDicts);
+
+            }catch(error){
+                console.error("Error getting aplications", error);
+            };
+        });
+        return () => fetchApplications();
+    }, []);
+
     const stats = [
         { title: "Total Applications", value: applications.length },
         {
