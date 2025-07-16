@@ -37,7 +37,7 @@ export default function DatePicker({ onDateRangeChange }) {
   const handleCustomDateChange = () => {
     if (startDate && endDate) {
       setActivePreset('Custom Range');
-      onDateRangeChange(startDate, endDate);
+      onDateRangeChange(startDate + "T00:00:00.000Z", endDate + "T23:59:59.999Z");
     }
   };
 
