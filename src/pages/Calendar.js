@@ -48,6 +48,9 @@ export default function Calendar() {
               timeMax: endDate,
               maxResults: maxResults + maxResults,
             });
+
+            params.append('timeZone', Intl.DateTimeFormat().resolvedOptions().timeZone);
+
             
             // Add search query if provided
             if (input.trim()) {
