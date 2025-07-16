@@ -1,13 +1,35 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import { useEffect, useState } from 'react';
+import { auth, db } from "../firebase";
+import { getDocs, collection } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 
-export default function Dashboard({ applications }) {
-    // state for search and filter
-    const [searchTerm, setSearchTerm] = useState('');
-    const [statusFilter, setStatusFilter] = useState('All');
 
+export default function Dashboard() {
     // calculate stats from application status data
+    const [applications, setApplications] = useState([]);
+
+    useEffect(()=>{
+        const fetchApplications = onAuthStateChanged(auth, async (user) => {
+            try{
+                const user = auth.currentUser;
+                const documents = await getDocs(collection(db, "users", user.uid, "aplications"));
+
+                const documentsDicts = documents.docs.map( doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                setApplications(documentsDicts);
+
+            }catch(error){
+                console.error("Error getting aplications", error);
+            };
+        });
+        return () => fetchApplications();
+    }, []);
+
     const stats = [
         { title: "Total Applications", value: applications.length },
         {
@@ -28,25 +50,25 @@ export default function Dashboard({ applications }) {
         },
     ];
 
-    // filter applications based on search query and status filter
-    const filteredApplications = applications.filter(app => {
-        const searchTermLower = searchTerm.toLowerCase();
-        const companyLower = app.company?.toLowerCase() || '';
-        const positionLower = app.position?.toLowerCase() || '';
-        const notesLower = typeof app.notes === 'string' ? app.notes.toLowerCase() : '';
+    // // filter applications based on search query and status filter
+    // const filteredApplications = applications.filter(app => {
+    //     const searchTermLower = searchTerm.toLowerCase();
+    //     const companyLower = app.company?.toLowerCase() || '';
+    //     const positionLower = app.position?.toLowerCase() || '';
+    //     const notesLower = typeof app.notes === 'string' ? app.notes.toLowerCase() : '';
 
-        const matchesSearch =
-            companyLower.includes(searchTermLower) ||
-            positionLower.includes(searchTermLower) ||
-            notesLower.includes(searchTermLower);
+    //     const matchesSearch =
+    //         companyLower.includes(searchTermLower) ||
+    //         positionLower.includes(searchTermLower) ||
+    //         notesLower.includes(searchTermLower);
 
-        // check if application matches selected status filter or show all
-        const matchesStatus = statusFilter === 'All' || app.status === statusFilter;
+    //     // check if application matches selected status filter or show all
+    //     const matchesStatus = statusFilter === 'All' || app.status === statusFilter;
 
-        return matchesSearch && matchesStatus;
-    });
-    // get status values for filter dropdown from exitsing applications
-    const statusOptions = ['All', ...new Set(applications.map(app => app.status))];
+    //     return matchesSearch && matchesStatus;
+    // });
+    // // get status values for filter dropdown from exitsing applications
+    // const statusOptions = ['All', ...new Set(applications.map(app => app.status))];
 
     return (
         <div className="dashboard">
@@ -68,10 +90,10 @@ export default function Dashboard({ applications }) {
                 <div className="list-header">
                     <h2>Your Applications</h2>
                     <div className="controls">
-                        <div className="search-filter-container">
+                        {/* <div className="search-filter-container">
                             <input
                                 type="text"
-                                placeholder="Search by company, position, or notes..."
+                                placeholder="Search"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 className="search-input"
@@ -87,21 +109,25 @@ export default function Dashboard({ applications }) {
                                     </option>
                                 ))}
                             </select>
-                        </div>
+                        </div> */}
                         <Link to="/add-application" className="add-button">
                             + Track New Application
                         </Link>
                     </div>
                 </div>
 
-                {filteredApplications.length > 0 ? (
+                {applications.length > 0 ? (
                     <div className="applications">
-                        {filteredApplications.map(app => (
+                        {applications.map(app => (
                             <div key={app.id} className="application-card">
                                 <h3>
                                     <Link to={`/application/${app.id}`}>{app.company}</Link>
                                 </h3>
                                 <p>{app.position}</p>
+
+                                <p id="dashstatus" className={`status ${app.status.toLowerCase()}`}>
+                                    {app.status}
+                                </p>
                                 {app.link && (
                                     <a
                                         href={app.link}
@@ -112,9 +138,7 @@ export default function Dashboard({ applications }) {
                                         View Job Posting
                                     </a>
                                 )}
-                                <p id="dashstatus" className={`status ${app.status.toLowerCase()}`}>
-                                    {app.status}
-                                </p>
+
                                 <p>Date Applied: {app.date}</p>
                                 <Link
                                     to={`/application/${app.id}/notes`}
