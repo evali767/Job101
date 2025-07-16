@@ -2,12 +2,18 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import { auth, db } from "../firebase";
+import { addDoc, collection } from "firebase/firestore";
 
-// receive setApplications as a prop so that main applications list can be updated when new one is added
-export default function AddApplication({ setApplications }) {
-    // state management
-    // naviagte function to change routes
+export default function AddApplication() {
+    const [company, setCompany] = useState("");
+    const [position, setPosition] = useState("");
+    const [status, setStatus] = useState("Need to apply")
+    const [link, setUrl] = useState("")
+    const [date, setDate] = useState("")
+
     const navigate = useNavigate();
+<<<<<<< HEAD
     const location = useLocation();
     // initial values of form fields
     const jobData = location.state || {};
@@ -20,27 +26,34 @@ export default function AddApplication({ setApplications }) {
         link: jobData.link || ''  // if coming from job search pg, there will be a job link
     });
     const handleSubmit = (e) => {
+=======
+
+
+    const handleAplication = async (e) => {
+>>>>>>> backend
         e.preventDefault();
-        const newApplication = {
-            ...formData,
-            id: Date.now(),
-            notes: [] // initialize with empty notes array
-        };
-        setApplications(prev => [...prev, newApplication]);
-        navigate('/dashboard'); // go back to dashboard after submitting
+
+      const user = auth.currentUser
+      try{
+        await addDoc(collection(db, "users", user.uid, "aplications"), {company:company, position:position, status:status, link:link, date:date})
+        navigate("/dashboard");
+      }catch(error){
+        alert("updating data error" , error)
+      }
+        
+        
     };
 
     return (
         <div className="add-application">
             <Navbar />
             <h1>Add New Application</h1>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleAplication}>
                 <div className="form-group">
                     <label>Company:</label>
                     <input
                         type="text"
-                        value={formData.company}
-                        onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                        onChange={(e) =>  setCompany(e.target.value )}
                         required
                     />
                 </div>
@@ -49,8 +62,7 @@ export default function AddApplication({ setApplications }) {
                     <label>Position:</label>
                     <input
                         type="text"
-                        value={formData.position}
-                        onChange={(e) => setFormData({ ...formData, position: e.target.value })}
+                        onChange={(e) =>  setPosition(e.target.value )}
                         required
                     />
                 </div>
@@ -59,8 +71,7 @@ export default function AddApplication({ setApplications }) {
                     <label>Job Posting Link:</label>
                     <input
                         type="url"
-                        value={formData.link}
-                        onChange={(e) => setFormData({ ...formData, link: e.target.value })}
+                        onChange={(e) =>  setUrl(e.target.value )}
                         placeholder="https://example.com/job-posting"
                     />
                 </div>
@@ -69,8 +80,8 @@ export default function AddApplication({ setApplications }) {
                     <label>Status:</label>
                     {/* dropdown menu */}
                     <select
-                        value={formData.status}
-                        onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                        onChange={(e) =>  setStatus(e.target.value )}
+                        required
                     >
                         <option value="Apply">Apply</option>
                         <option value="Applied">Applied</option>
@@ -78,14 +89,14 @@ export default function AddApplication({ setApplications }) {
                         <option value="Rejected">Rejected</option>
                         <option value="Offer">Offer</option>
                     </select>
+                    
                 </div>
 
                 <div className="form-group">
                     <label>Date Applied:</label>
                     <input
                         type="date"
-                        value={formData.date}
-                        onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                        onChange={(e) =>  setDate(e.target.value )}
                     />
                 </div>
 

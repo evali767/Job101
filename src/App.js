@@ -28,7 +28,7 @@ function App() {
           <Route path="/" element={
             <Login onLogin={() => setIsLoggedIn(true)} />
           } />
-          <Route path="/dashboard" element={<Dashboard applications={applications} />} />
+          <Route path="/dashboard" element={<Dashboard/>} />
           <Route path="/signup" element={<Signup/>} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/jobsearch" element={<JobSearch />} />
@@ -38,7 +38,7 @@ function App() {
           />
           <Route
             path="/application/:id"
-            element={<ApplicationDetail applications={applications} setApplications={setApplications} />}
+            element={<ApplicationDetail/>}
           />
           <Route
             path="/application/:id/notes"
