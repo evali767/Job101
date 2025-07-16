@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import Navbar from '../components/Navbar';
-import { Navigate, redirect, redirectDocument, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import DatePicker from "../components/DatePicker";
 import { Dropdown, DropdownButton, DropdownItem, DropdownItems } from "../components/Dropdown";
 
@@ -29,7 +29,7 @@ export default function Calendar() {
   console.log(accessToken);
   let navigate = useNavigate();
 
-  useEffect(() => {
+  useEffect(( navigate ) => {
       if (accessToken) {
         const fetchAllCalendarEvents = async () => {
         try {
@@ -128,12 +128,12 @@ export default function Calendar() {
                 ))}
               </DropdownItems>
             </Dropdown>
-            <button onClick={handleSubmitEvent}>Create event</button>
+            <button className="action-btn" onClick={handleSubmitEvent}>Create event</button>
           <div className="mock-event">
             {events.map((event, index) => (
               <div key={index} className="stat-card"> 
                 <p><strong>{event.summary}</strong></p>
-                <p>{event.start.date ? event.start.date : event.start.dateTime}</p>
+                <p>{event.start.date ? event.start.date : event.start.dateTime }</p>
               </div>)
             )}
           </div>
@@ -147,6 +147,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    margin: "20px auto"
   },
   input: {
     width: '40%',

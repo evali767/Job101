@@ -510,3 +510,23 @@ button:hover {
   border-radius: 4px;
   background-color: white;
 }
+
+.preset-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding-bottom: 10px;
+}
+
+.action-btn {
+  /* display: flex; */
+  /* flex-wrap: wrap; */
+  margin-left: 15px;
+  margin-bottom: 15px;
+  background-color: green;
+  /* padding: 8px 16px; */
+}
+
+.action-btn:hover{
+  background-color: darkgreen;
+}
