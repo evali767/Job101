@@ -112,7 +112,7 @@ export default function Calendar() {
           </div>
           <DatePicker onDateRangeChange={(start, end) => { setStartDate(start); setEndDate(end); }} />
             <Dropdown>
-              <DropdownButton>{maxResults}</DropdownButton>
+              <DropdownButton>{maxResults} / page</DropdownButton>
               <DropdownItems>
                 {maxResultsOptions.map((option) => (
                   <DropdownItem onClick={() => setMaxResults(option)}>
