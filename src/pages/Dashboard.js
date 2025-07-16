@@ -71,7 +71,7 @@ export default function Dashboard({ applications }) {
                         <div className="search-filter-container">
                             <input
                                 type="text"
-                                placeholder="Search by company, position, or notes..."
+                                placeholder="Search"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 className="search-input"
@@ -102,6 +102,10 @@ export default function Dashboard({ applications }) {
                                     <Link to={`/application/${app.id}`}>{app.company}</Link>
                                 </h3>
                                 <p>{app.position}</p>
+
+                                <p id="dashstatus" className={`status ${app.status.toLowerCase()}`}>
+                                    {app.status}
+                                </p>
                                 {app.link && (
                                     <a
                                         href={app.link}
@@ -112,9 +116,7 @@ export default function Dashboard({ applications }) {
                                         View Job Posting
                                     </a>
                                 )}
-                                <p id="dashstatus" className={`status ${app.status.toLowerCase()}`}>
-                                    {app.status}
-                                </p>
+
                                 <p>Date Applied: {app.date}</p>
                                 <Link
                                     to={`/application/${app.id}/notes`}
