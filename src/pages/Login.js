@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { auth, provider, db } from "../firebase";
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
+
+export let accessToken = undefined;
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -18,10 +20,22 @@ function Login() {
     }
   };
 
-  const loginWithGoogle = async () => {
+  const googleProvider = new GoogleAuthProvider();
+  provider.addScope('https://www.googleapis.com/auth/calendar');
+
+const loginWithGoogle = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
+
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      accessToken = credential.accessToken;
+
+      // stored in local computer, never do this in a real app
+      localStorage.setItem('googleAccessToken', accessToken);
+
       const user = result.user;
+      console.log('Logged in user:', user);
+      navigate("/dashboard");
 
       // Check if Firestore user doc exists
       const userRef = doc(db, "users", user.uid);
