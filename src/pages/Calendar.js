@@ -7,46 +7,102 @@ export default function Calendar() {
   const [events, setEvents] = useState([]);
   const accessToken = localStorage.getItem('googleAccessToken');
 
+  const [input, setInput] = useState("");
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      setInput(e.target.value);
+    }
+  };
+
   console.log(accessToken);
   let navigate = useNavigate();
 
+  const now = new Date();
+  const tenDaysFromNow = new Date();
+  tenDaysFromNow.setDate(now.getDate() + 10);
+  const timeMax = tenDaysFromNow.toISOString();  
+
   useEffect(() => {
       if (accessToken) {
-        const now = new Date();
-        const oneYearFromNow = new Date();
-        oneYearFromNow.setDate(now.getDay() + 10);
-        const timeMax = oneYearFromNow.toISOString();  
+        const fetchAllCalendarEvents = async () => {
+        try {
+          // Get all calendars
+          const calendarsResponse = await fetch('https://www.googleapis.com/calendar/v3/users/me/calendarList', {
+            headers: { 'Authorization': "Bearer " + accessToken }
+          });
+          const calendars = await calendarsResponse.json();
+          console.log('Calendars found:', calendars.items?.length);
 
-        fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events?singleEvents=true&orderBy=startTime&timeMax=${timeMax}`, {
-        headers: {
-          'Authorization': `Bearer ${accessToken}`
-        }})
-        .then(res => {
-          return res.json();
-        }).then(data => {
-          console.log(data.items);
-          data.items.reverse();
-          setEvents(data.items)
-        }).catch(() => {
-          console.log("test")
+          const buildEventUrl = (calendarId) => {
+            const params = new URLSearchParams({
+              singleEvents: 'true',
+              orderBy: 'startTime',
+              timeMin: now.toISOString(),
+              timeMax: timeMax,
+              maxResults: '10'
+            });
+            
+            // Add search query if provided
+            if (input.trim()) {
+              params.append('q', input);
+            }
+            
+            return `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events?${params}`;
+          };
+
+          // Fetch all calendar events in parallel
+          const eventPromises = calendars.items.map(calendar => 
+            fetch(buildEventUrl(calendar.id), {
+              headers: { 'Authorization': "Bearer " + accessToken }
+            })
+            .then(response => response.json())
+            .then(events => events.items || [])
+            .catch(error => {
+              console.error(`Error fetching calendar ${calendar.summary}:`, error);
+              return [];
+            })
+          );
+
+          // Wait for all requests to complete
+          const eventArrays = await Promise.all(eventPromises);
+          
+          // Flatten all events into one array
+          const allEvents = eventArrays.flat();
+          
+          console.log(`Total events found: ${allEvents.length}`);
+          
+          // Sort events by start time
+          allEvents.sort((a, b) => {
+            const dateA = new Date(a.start?.dateTime || a.start?.date);
+            const dateB = new Date(b.start?.dateTime || b.start?.date);
+            return dateA - dateB;
+          });
+          
+          setEvents(allEvents);
+          
+        } catch (error) {
           navigate("/");
-        });
+        }
+      };
+
+      fetchAllCalendarEvents();
     } else {
       navigate("/");
     }
-  }, accessToken)
+  }, [accessToken, input])
 
     return (
       <div className="calendar">
         <Navbar />
         <h1>Calendar</h1>
         <div className="calendar-placeholder">
-          <p>This will connect to Google Calendar API later.</p>
+          <div style={styles.container}>
+            <input type="text" name="Search box" style={styles.input} onKeyDown={(e) => handleKeyDown(e)}/>
+          </div>
           <div className="mock-event">
-            <p><strong>Interview</strong></p>
-            <p>June 15, 2023 - 2:00 PM</p>
             {events.map((event, index) => (
-              <div key={index}>
+              <div key={index} className="stat-card"> 
                 <p><strong>{event.summary}</strong></p>
                 <p>{event.start.date ? event.start.date : event.start.dateTime}</p>
               </div>)
@@ -56,3 +112,20 @@ export default function Calendar() {
       </div>
     );
   }
+
+const styles = {
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  input: {
+    width: '40%',
+    height: '50px',
+    fontSize: '1.5rem',
+    padding: '0 15px',
+    borderRadius: '8px',
+    border: '2px solid #999',
+    outline: 'none',
+  },
+};
