@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { useEffect, useState } from 'react';
@@ -6,16 +5,8 @@ import { auth, db } from "../firebase";
 import { getDocs, collection } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 
-<<<<<<< HEAD
-export default function Dashboard({ applications }) {
-    // state for search and filter
-    const [searchTerm, setSearchTerm] = useState('');
-    const [statusFilter, setStatusFilter] = useState('All');
-
-=======
 
 export default function Dashboard() {
->>>>>>> backend
     // calculate stats from application status data
     const [applications, setApplications] = useState([]);
 
@@ -59,25 +50,25 @@ export default function Dashboard() {
         },
     ];
 
-    // filter applications based on search query and status filter
-    const filteredApplications = applications.filter(app => {
-        const searchTermLower = searchTerm.toLowerCase();
-        const companyLower = app.company?.toLowerCase() || '';
-        const positionLower = app.position?.toLowerCase() || '';
-        const notesLower = typeof app.notes === 'string' ? app.notes.toLowerCase() : '';
+    // // filter applications based on search query and status filter
+    // const filteredApplications = applications.filter(app => {
+    //     const searchTermLower = searchTerm.toLowerCase();
+    //     const companyLower = app.company?.toLowerCase() || '';
+    //     const positionLower = app.position?.toLowerCase() || '';
+    //     const notesLower = typeof app.notes === 'string' ? app.notes.toLowerCase() : '';
 
-        const matchesSearch =
-            companyLower.includes(searchTermLower) ||
-            positionLower.includes(searchTermLower) ||
-            notesLower.includes(searchTermLower);
+    //     const matchesSearch =
+    //         companyLower.includes(searchTermLower) ||
+    //         positionLower.includes(searchTermLower) ||
+    //         notesLower.includes(searchTermLower);
 
-        // check if application matches selected status filter or show all
-        const matchesStatus = statusFilter === 'All' || app.status === statusFilter;
+    //     // check if application matches selected status filter or show all
+    //     const matchesStatus = statusFilter === 'All' || app.status === statusFilter;
 
-        return matchesSearch && matchesStatus;
-    });
-    // get status values for filter dropdown from exitsing applications
-    const statusOptions = ['All', ...new Set(applications.map(app => app.status))];
+    //     return matchesSearch && matchesStatus;
+    // });
+    // // get status values for filter dropdown from exitsing applications
+    // const statusOptions = ['All', ...new Set(applications.map(app => app.status))];
 
     return (
         <div className="dashboard">
@@ -99,7 +90,7 @@ export default function Dashboard() {
                 <div className="list-header">
                     <h2>Your Applications</h2>
                     <div className="controls">
-                        <div className="search-filter-container">
+                        {/* <div className="search-filter-container">
                             <input
                                 type="text"
                                 placeholder="Search"
@@ -118,16 +109,16 @@ export default function Dashboard() {
                                     </option>
                                 ))}
                             </select>
-                        </div>
+                        </div> */}
                         <Link to="/add-application" className="add-button">
                             + Track New Application
                         </Link>
                     </div>
                 </div>
 
-                {filteredApplications.length > 0 ? (
+                {applications.length > 0 ? (
                     <div className="applications">
-                        {filteredApplications.map(app => (
+                        {applications.map(app => (
                             <div key={app.id} className="application-card">
                                 <h3>
                                     <Link to={`/application/${app.id}`}>{app.company}</Link>
