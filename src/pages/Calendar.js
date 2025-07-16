@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 
 import Navbar from '../components/Navbar';
+import { Navigate, redirect, redirectDocument, useNavigate } from "react-router-dom";
 
 export default function Calendar() {
   const [events, setEvents] = useState([]);
   const accessToken = localStorage.getItem('googleAccessToken');
 
   console.log(accessToken);
+  let navigate = useNavigate();
 
   useEffect(() => {
       if (accessToken) {
@@ -25,7 +27,12 @@ export default function Calendar() {
           console.log(data.items);
           data.items.reverse();
           setEvents(data.items)
+        }).catch(() => {
+          console.log("test")
+          navigate("/");
         });
+    } else {
+      navigate("/");
     }
   }, accessToken)
 
