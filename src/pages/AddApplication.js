@@ -10,7 +10,7 @@ export default function AddApplication() {
     const location = useLocation();
     const jobData = location.state || {};
 
-    const [company, setCompany] = useState("");
+    const [company, setCompany] = useState(jobData.company || "");
     const [position, setPosition] = useState(jobData.position || "");
     // assumes user still needs to apply
     const [status, setStatus] = useState("Need to apply")
@@ -44,6 +44,7 @@ export default function AddApplication() {
                     <label>Company:</label>
                     <input
                         type="text"
+                        value={company}
                         onChange={(e) =>  setCompany(e.target.value )}
                         // value={company}
                         // onChange={(e) => setFormData({ ...formData, company: e.target.value })}

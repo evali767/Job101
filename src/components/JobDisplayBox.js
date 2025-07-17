@@ -27,7 +27,8 @@ export default function JobDisplayBox({ page, results_per_page, what, onSave }) 
         <p>Location: {job.location.display_name}</p>
         <button onClick={() => onSave({
           position: job.title,
-          link: job.redirect_url
+          link: job.redirect_url,
+          company: job.company.display_name,
         })}>Save</button>
       </div>
     ))}
