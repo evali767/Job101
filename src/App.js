@@ -16,9 +16,9 @@ import './App.css';
 import AddEvent from './pages/AddEvent';
 
 function App() {
-  // state management
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // store applicatons here, empty at first
+  
   const [applications, setApplications] = useState([]);
 
   return (
