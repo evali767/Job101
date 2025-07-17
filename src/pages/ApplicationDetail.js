@@ -1,6 +1,6 @@
 // view application details -- user sees this after clicking on company name of job posting
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 import Navbar from '../components/Navbar';
 import { auth, db } from "../firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
