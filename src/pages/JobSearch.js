@@ -25,7 +25,8 @@ export default function JobSearch() {
         navigate('/add-application', {
             state: {
                 position: jobData.position,
-                link: jobData.link
+                link: jobData.link,
+                company: jobData.company,
             }
         });
     };
