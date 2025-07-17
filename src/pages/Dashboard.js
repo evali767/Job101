@@ -11,26 +11,27 @@ export default function Dashboard() {
     const [applications, setApplications] = useState([]);
     const [searchTerm, setSearch] = useState('');
 
-    useEffect(()=>{
+    useEffect(() => {
         const fetchApplications = onAuthStateChanged(auth, async (user) => {
-            try{
+            try {
                 const user = auth.currentUser;
                 const documents = await getDocs(collection(db, "users", user.uid, "aplications"));
 
-                const documentsDicts = documents.docs.map( doc => ({
+                const documentsDicts = documents.docs.map(doc => ({
                     id: doc.id,
                     ...doc.data()
                 }));
 
                 setApplications(documentsDicts);
 
-            }catch(error){
+            } catch (error) {
                 console.error("Error getting aplications", error);
             };
         });
         return () => fetchApplications();
     }, []);
 
+    // create array of objects where each object counts applications with a certain status
     const stats = [
         { title: "Total Applications", value: applications.length },
         {
@@ -56,24 +57,15 @@ export default function Dashboard() {
     // // filter applications based on search query and status filter
     const filteredApplications = applications.filter(app => {
         const searchTermLowercase = searchTerm.toLowerCase();
-        const company = app.company ? app.company.toLowerCase(): '';
+        const company = app.company ? app.company.toLowerCase() : '';
         const position = app.position ? app.position.toLowerCase() : '';
-        const notes = app.notes? app.notes.toLowerCase() : '';
+        const notes = app.notes ? app.notes.toLowerCase() : '';
         const status = app.status ? app.status.toLowerCase() : '';
 
         return (
-            company.includes(searchTermLowercase) || position.includes(searchTermLowercase) || notes.includes (searchTermLowercase) || status.includes(searchTermLowercase)
+            company.includes(searchTermLowercase) || position.includes(searchTermLowercase) || notes.includes(searchTermLowercase) || status.includes(searchTermLowercase)
         );
     });
-
-
-    //     // check if application matches selected status filter or show all
-    //     const matchesStatus = statusFilter === 'All' || app.status === statusFilter;
-
-    //     return matchesSearch && matchesStatus;
-    // });
-    // // get status values for filter dropdown from exitsing applications
-    // const statusOptions = ['All', ...new Set(applications.map(app => app.status))];
 
     return (
         <div className="dashboard">
@@ -95,31 +87,11 @@ export default function Dashboard() {
                 <div className="list-header">
                     <h2>Your Applications</h2>
                     <div className="controls">
-                    <input type="text" className='search-input'  value={searchTerm}
-                        onChange={(e) => setSearch(e.target.value)}
-                        placeholder="Search..."
+                        <input type="text" className='search-input' value={searchTerm}
+                            onChange={(e) => setSearch(e.target.value)}
+                            placeholder="Search..."
                         />
-                        {/* <div className="search-filter-container">
-                            <input
-                                type="text"
-                                placeholder="Search"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className="search-input"
-                            />
-                            <select
-                                value={statusFilter}
-                                onChange={(e) => setStatusFilter(e.target.value)}
-                                className="status-filter"
-                            >
-                                {statusOptions.map(status => (
-                                    <option key={status} value={status}>
-                                        {status}
-                                    </option>
-                                ))}
-                            </select>
-                        </div> */}
-                        <Link to="/add-application" className="add-button">
+                        <Link data-testid="track-app-btn" to="/add-application" className="add-button">
                             + Track New Application
                         </Link>
                     </div>
@@ -127,6 +99,7 @@ export default function Dashboard() {
 
                 {applications.length > 0 ? (
                     <div className="applications">
+                        {/* for each application according to the search term */}
                         {filteredApplications.map(app => (
                             <div key={app.id} className="application-card">
                                 <h3>
