@@ -45,7 +45,7 @@ export default function JobSearch() {
                   )}
                 </DropdownItems>
           </Dropdown>
-            <JobDisplayBox page="1" results_per_page="20" what={input} onSave={handleSaveJob} />
+            <JobDisplayBox page="1" results_per_page={resultsPerPage} what={input} onSave={handleSaveJob} />
         </div>
     );
 }
