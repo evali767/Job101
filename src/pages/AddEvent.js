@@ -11,15 +11,11 @@ export default function AddEvent({ setApplications }) {
     const location = useLocation();
     const accessToken = localStorage.getItem('googleAccessToken');
 
-            console.log((new Date).toISOString().split("T")[0]);
-
-    console.log("T" + "00:00" + ":00.000Z");
-
     const [formData, setFormData] = useState({
         startDate: (new Date).toISOString().split("T")[0],
         endDate: (new Date).toISOString().split("T")[0],
         startTime: "00:00",
-        endTime: "12:00",
+        endTime: "23:59",
         summary: "", // title of the event
         description: "",
         location: ""
@@ -31,11 +27,7 @@ export default function AddEvent({ setApplications }) {
 
         console.log(formData);
 
-        console.log("T00:00:00.000Z");
-        console.log(startDate + "T" + startTime + ":00.000Z");
-
-
-        createCalendarEvent(accessToken, summary, description, startDate + "T" + startTime + ":00.000Z", endDate + "T" + endTime + ":00.000Z", location)
+        createCalendarEvent(accessToken, summary, description, startDate + "T" + startTime + ":00", endDate + "T" + endTime + ":00", location)
             .then(() => navigate('/calendar')) // go back to calendar after submitting);
             .catch(() => navigate("/"));
     };

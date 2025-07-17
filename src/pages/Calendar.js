@@ -90,6 +90,8 @@ export default function Calendar() {
             return dateA - dateB;
           });
 
+          console.log(allEvents);
+
           const limitedEvents = allEvents.slice(0, maxResults);
 
           setEvents(limitedEvents);
