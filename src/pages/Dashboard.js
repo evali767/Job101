@@ -9,6 +9,7 @@ import { onAuthStateChanged } from "firebase/auth";
 export default function Dashboard() {
     // calculate stats from application status data
     const [applications, setApplications] = useState([]);
+    const [searchTerm, setSearch] = useState('');
 
     useEffect(()=>{
         const fetchApplications = onAuthStateChanged(auth, async (user) => {
@@ -50,17 +51,21 @@ export default function Dashboard() {
         },
     ];
 
-    // // filter applications based on search query and status filter
-    // const filteredApplications = applications.filter(app => {
-    //     const searchTermLower = searchTerm.toLowerCase();
-    //     const companyLower = app.company?.toLowerCase() || '';
-    //     const positionLower = app.position?.toLowerCase() || '';
-    //     const notesLower = typeof app.notes === 'string' ? app.notes.toLowerCase() : '';
 
-    //     const matchesSearch =
-    //         companyLower.includes(searchTermLower) ||
-    //         positionLower.includes(searchTermLower) ||
-    //         notesLower.includes(searchTermLower);
+
+    // // filter applications based on search query and status filter
+    const filteredApplications = applications.filter(app => {
+        const searchTermLowercase = searchTerm.toLowerCase();
+        const company = app.company ? app.company.toLowerCase(): '';
+        const position = app.position ? app.position.toLowerCase() : '';
+        const notes = app.notes? app.notes.toLowerCase() : '';
+        const status = app.status ? app.status.toLowerCase() : '';
+
+        return (
+            company.includes(searchTermLowercase) || position.includes(searchTermLowercase) || notes.includes (searchTermLowercase) || status.includes(searchTermLowercase)
+        );
+    });
+
 
     //     // check if application matches selected status filter or show all
     //     const matchesStatus = statusFilter === 'All' || app.status === statusFilter;
@@ -90,6 +95,10 @@ export default function Dashboard() {
                 <div className="list-header">
                     <h2>Your Applications</h2>
                     <div className="controls">
+                    <input type="text" className='search-input'  value={searchTerm}
+                        onChange={(e) => setSearch(e.target.value)}
+                        placeholder="Search..."
+                        />
                         {/* <div className="search-filter-container">
                             <input
                                 type="text"
@@ -118,7 +127,7 @@ export default function Dashboard() {
 
                 {applications.length > 0 ? (
                     <div className="applications">
-                        {applications.map(app => (
+                        {filteredApplications.map(app => (
                             <div key={app.id} className="application-card">
                                 <h3>
                                     <Link to={`/application/${app.id}`}>{app.company}</Link>
