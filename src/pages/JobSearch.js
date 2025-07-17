@@ -5,11 +5,12 @@ import Navbar from '../components/Navbar';
 import JobDisplayBox from '../components/JobDisplayBox';
 import { Dropdown, DropdownButton, DropdownItem, DropdownItems } from '../components/Dropdown';
 
-const resultsPerPageOptions = [5, 10, 20, 30, 40, 50];
+const resultsPerPageOptions = [5, 10, 20, 30, 40, 50, 100];
+const defaultResultsPerPage = 50;
 
 export default function JobSearch() {
   const [input, setInput] = useState("js developer");
-  const [resultsPerPage, setResultsPerPage] = useState(5);
+  const [resultsPerPage, setResultsPerPage] = useState(defaultResultsPerPage);
   const navigate = useNavigate();
 
     const handleKeyDown = (e) => {
