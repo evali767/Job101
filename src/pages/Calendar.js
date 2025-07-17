@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import Navbar from '../components/Navbar';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import DatePicker from "../components/DatePicker";
 import { Dropdown, DropdownButton, DropdownItem, DropdownItems } from "../components/Dropdown";
 

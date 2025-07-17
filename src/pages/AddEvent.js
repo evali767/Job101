@@ -1,6 +1,6 @@
 // page to add new job application to track
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router';
 import Navbar from '../components/Navbar';
 
 // receive setApplications as a prop so that main applications list can be updated when new one is added

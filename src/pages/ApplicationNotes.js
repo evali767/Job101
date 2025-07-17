@@ -1,6 +1,6 @@
 // users can take notes under each job application
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 import Navbar from '../components/Navbar';
 import { auth, db } from "../firebase";
 import { getDocs, collection, addDoc } from "firebase/firestore";

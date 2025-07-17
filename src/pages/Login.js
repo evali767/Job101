@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { auth, provider, db } from "../firebase";
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 
 export let accessToken = undefined;

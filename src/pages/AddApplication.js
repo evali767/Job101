@@ -1,7 +1,7 @@
 // page to add new job application to track
 import { useState } from 'react';
 // import { useNavigate, useLocation } from 'react-router-dom';
-import { useNavigate, useLocation} from 'react-router-dom';
+import { useNavigate, useLocation} from 'react-router';
 import Navbar from '../components/Navbar';
 import { auth, db } from "../firebase";
 import { addDoc, collection } from "firebase/firestore";
