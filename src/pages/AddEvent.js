@@ -11,9 +11,15 @@ export default function AddEvent({ setApplications }) {
     const location = useLocation();
     const accessToken = localStorage.getItem('googleAccessToken');
 
+            console.log((new Date).toISOString().split("T")[0]);
+
+    console.log("T" + "00:00" + ":00.000Z");
+
     const [formData, setFormData] = useState({
-        startDateTime: (new Date),
-        endDateTime: (new Date),
+        startDate: (new Date).toISOString().split("T")[0],
+        endDate: (new Date).toISOString().split("T")[0],
+        startTime: "00:00",
+        endTime: "12:00",
         summary: "", // title of the event
         description: "",
         location: ""
@@ -21,11 +27,15 @@ export default function AddEvent({ setApplications }) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const { summary, description, startDateTime, endDateTime, location } = formData;
+        const { summary, description, startDate, startTime, endDate, endTime, location } = formData;
 
         console.log(formData);
 
-        createCalendarEvent(accessToken, summary, description, startDateTime + "T00:00:00.000Z", endDateTime + "T23:59:59.999Z", location)
+        console.log("T00:00:00.000Z");
+        console.log(startDate + "T" + startTime + ":00.000Z");
+
+
+        createCalendarEvent(accessToken, summary, description, startDate + "T" + startTime + ":00.000Z", endDate + "T" + endTime + ":00.000Z", location)
             .then(() => navigate('/calendar')) // go back to calendar after submitting);
             .catch(() => navigate("/"));
     };
@@ -35,24 +45,40 @@ export default function AddEvent({ setApplications }) {
             <Navbar />
             <h1>Add New Event</h1>
             <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label>Start Time:</label>
-                    <input
-                        type="date"
-                        value={formData.startDateTime}
-                        onChange={(e) => setFormData({ ...formData, startDateTime: e.target.value })}
-                        required="true"
-                    />
+            <div className="form-group">
+                <label>Start Date & Time:</label>
+                <div className="datetime-inputs">
+                        <input
+                            type="date"
+                            value={formData.startDate}
+                            onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+                            required
+                        />
+                        <input
+                            type="time"
+                            value={formData.startTime}
+                            onChange={(e) => setFormData({ ...formData, startTime: e.target.value })}
+                            required
+                        />
+                    </div>
                 </div>
 
                 <div className="form-group">
-                    <label>End time:</label>
-                    <input
-                        type="date"
-                        value={formData.endDateTime}
-                        onChange={(e) => setFormData({ ...formData, endDateTime: e.target.value })}
-                        required="true"
-                    />
+                    <label>End Date & Time:</label>
+                    <div className="datetime-inputs">
+                        <input
+                            type="date"
+                            value={formData.endDate}
+                            onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
+                            required
+                        />
+                        <input
+                            type="time"
+                            value={formData.endTime}
+                            onChange={(e) => setFormData({ ...formData, endTime: e.target.value })}
+                            required
+                        />
+                    </div>
                 </div>
 
                 <div className="form-group">
@@ -62,7 +88,7 @@ export default function AddEvent({ setApplications }) {
                         value={formData.summary}
                         onChange={(e) => setFormData({ ...formData, summary: e.target.value })}
                         placeholder="My Event"
-                        required="true"
+                        required
                     />
                 </div>
 
@@ -73,7 +99,7 @@ export default function AddEvent({ setApplications }) {
                         value={formData.description}
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                         placeholder="Description"
-                        required="true"
+                        required
                     />
                 </div>
 
@@ -84,7 +110,7 @@ export default function AddEvent({ setApplications }) {
                         value={formData.location}
                         onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                         placeholder="Location"
-                        required="true"
+                        required
                     />
                 </div>
 
@@ -113,6 +139,8 @@ const createCalendarEvent = async (accessToken, summary, description, startDateT
       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     }
   };
+
+  console.log(eventData);
 
   try {
     console.log("at: ", accessToken);
