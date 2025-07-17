@@ -1,62 +1,64 @@
 // users can take notes under each job application
-import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import { auth, db } from "../firebase";
+import { getDocs, collection, addDoc } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 
-export default function ApplicationNotes({ applications, setApplications }) {
+export default function ApplicationNotes() {
     const { id } = useParams();  //get app ID from URL
     const navigate = useNavigate();
-    const app = applications.find(a => a.id === Number(id)); //find matching app to ID
+    const [title, setTitle] = useState("")
+    const [body, setBody] = useState("")
+    const [important, setImportant] = useState("")
+    const [todo, setTodo] = useState("")
 
     // notes initialized as an array
-    const [notes, setNotes] = useState(() => {
-        // if no notes yet, initialize new array
-        if (!app.notes) return [];
-        if (Array.isArray(app.notes)) return app.notes;
-        return [];
-    });
+    const [notes, setNotes] = useState([]) 
+    useEffect(()=>{
+            const fetchNotes = onAuthStateChanged(auth, async (user) => {
+                try{
+                    const user = auth.currentUser;
+                    const documents = await getDocs(collection(db, "users", user.uid, "aplications", id, "notes"));
+    
+                    const documentsDicts = documents.docs.map( doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    }));
+    
+                    setNotes(documentsDicts);
+    
+                }catch(error){
+                    console.error("Error getting aplications", error);
+                };
+            });
+            return () => fetchNotes();
+        }, [id]);
+    
+    const applyNote = async(e) => {
+        e.preventDefault();
 
-    // new note being typed
-    const [newNote, setNewNote] = useState({
-        title: '',
-        body: '',
-        important: '',
-        todo: '',
-        date: new Date().toLocaleDateString() //auto sets to today's date
-    });
-
-    // update notes array with new note and updates parent state
-    const saveNote = () => {
-        if (!newNote.title || !newNote.body) return; // require at least title and body
-
-        const updatedNotes = [...notes, newNote];
-        setApplications(applications.map(a =>
-            a.id === Number(id) ? { ...a, notes: updatedNotes } : a
-        ));
-        setNotes(updatedNotes); //update local state
-        setNewNote({ //reset form
-            title: '',
-            body: '',
-            important: '',
-            todo: '',
-            date: new Date().toLocaleDateString()
-        });
+        try{
+            const user = auth.currentUser;
+            await addDoc(collection(db, "users", user.uid, "aplications", id, "notes"), {title:title, body:body, important:important, todo:todo});
+            navigate(0)
+        }catch(error){
+            alert("updating data error" , error);
+        };
+        
     };
 
-    // dynamically updates new note when typing 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setNewNote({
-            ...newNote,
-            [name]: value
-        });
+    const handleNote = async (e) => {
+        if (!title || !body) return alert("Please fill in all fields");
+        await applyNote(e);
     };
 
     return (
         <div className="application-notes">
             <Navbar />
             <div className="notes-container">
-                <h1>Notes for {app.company}</h1>
+                <h1>Notes</h1>
 
                 <div className="notes-layout">
                     {/* display existing notes */}
@@ -97,8 +99,7 @@ export default function ApplicationNotes({ applications, setApplications }) {
                             <input
                                 type="text"
                                 name="title"
-                                value={newNote.title}
-                                onChange={handleInputChange}
+                                onChange={(e) =>  setTitle(e.target.value )}
                                 required
                             />
                         </div>
@@ -108,8 +109,7 @@ export default function ApplicationNotes({ applications, setApplications }) {
                                 <label>Body:</label>
                                 <textarea
                                     name="body"
-                                    value={newNote.body}
-                                    onChange={handleInputChange}
+                                    onChange={(e) =>  setBody(e.target.value )}
                                     rows="4"
                                     required
                                 />
@@ -119,8 +119,7 @@ export default function ApplicationNotes({ applications, setApplications }) {
                                 <label>Important:</label>
                                 <textarea
                                     name="important"
-                                    value={newNote.important}
-                                    onChange={handleInputChange}
+                                    onChange={(e) =>  setImportant(e.target.value )}
                                     rows="4"
                                 />
                             </div>
@@ -130,13 +129,12 @@ export default function ApplicationNotes({ applications, setApplications }) {
                             <label>To Do:</label>
                             <textarea
                                 name="todo"
-                                value={newNote.todo}
-                                onChange={handleInputChange}
+                                onChange={(e) =>  setTodo(e.target.value )}
                                 rows="2"
                             />
                         </div>
 
-                        <button onClick={saveNote}>Save Note</button>
+                        <button onClick={(e) =>handleNote(e)}>Save Note</button>
                     </div>
                 </div>
 
