@@ -6,6 +6,7 @@ import DatePicker from "../components/DatePicker";
 import { Dropdown, DropdownButton, DropdownItem, DropdownItems } from "../components/Dropdown";
 
 const maxResultsOptions = [5, 10, 20, 40, 50, 100];
+const defaultCalendarResults = 20;
 
 export default function Calendar() {
   const [events, setEvents] = useState([]);
@@ -16,7 +17,7 @@ export default function Calendar() {
   maxTime.setDate(now.getDate() + 7);
   const [startDate, setStartDate] = useState(now.toISOString());
   const [endDate, setEndDate] = useState(maxTime.toISOString());
-  const [maxResults, setMaxResults] = useState(10);
+  const [maxResults, setMaxResults] = useState(defaultCalendarResults);
 
   const [input, setInput] = useState("");
 
