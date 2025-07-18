@@ -97,6 +97,7 @@ export default function ApplicationNotes() {
                         <div className="form-group">
                             <label>Title:</label>
                             <input
+                                id='title'
                                 type="text"
                                 name="title"
                                 onChange={(e) =>  setTitle(e.target.value )}
@@ -108,6 +109,7 @@ export default function ApplicationNotes() {
                             <div className="form-group">
                                 <label>Body:</label>
                                 <textarea
+                                id='body'
                                     name="body"
                                     onChange={(e) =>  setBody(e.target.value )}
                                     rows="4"
@@ -118,6 +120,7 @@ export default function ApplicationNotes() {
                             <div className="form-group">
                                 <label>Important:</label>
                                 <textarea
+                                    id='important'
                                     name="important"
                                     onChange={(e) =>  setImportant(e.target.value )}
                                     rows="4"
@@ -128,6 +131,7 @@ export default function ApplicationNotes() {
                         <div className="form-group">
                             <label>To Do:</label>
                             <textarea
+                                id='todo'
                                 name="todo"
                                 onChange={(e) =>  setTodo(e.target.value )}
                                 rows="2"

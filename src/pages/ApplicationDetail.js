@@ -66,6 +66,7 @@ export default function ApplicationDetail( ) {
             <div className="form-group">
               <label>Company:</label>
               <input
+                id='company'
                 name="company"
                 value={company}
                 onChange={(e) =>  setCompany(e.target.value )}
@@ -74,6 +75,7 @@ export default function ApplicationDetail( ) {
             <div className="form-group">
               <label>Position:</label>
               <input
+              id='position'
                 name="position"
                 value={position}
                 onChange={(e) =>  setPosition(e.target.value )}
@@ -82,6 +84,7 @@ export default function ApplicationDetail( ) {
             <div className="form-group">
               <label>Job Posting Link:</label>
               <input
+                id='link'
                 type="url"
                 name="link"
                 value={link || ''}
@@ -92,6 +95,7 @@ export default function ApplicationDetail( ) {
             <div className="form-group">
               <label>Status:</label>
               <select
+                id='status'
                 name="status"
                 value={status}
                 onChange={(e) =>  setStatus(e.target.value )}
@@ -106,6 +110,7 @@ export default function ApplicationDetail( ) {
             <div className="form-group">
               <label>Date Applied:</label>
               <input
+                id='date'
                 type="date"
                 name="date"
                 value={date}
