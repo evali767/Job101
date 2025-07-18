@@ -1,16 +1,19 @@
 import { useState } from "react";
 import { auth, provider, db } from "../firebase";
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {signInWithEmailAndPassword,signInWithPopup,GoogleAuthProvider,} from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 
 export let accessToken = undefined;
 
 function Login() {
+  //variables for log in
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const navigate = useNavigate();
 
+  // Handles Login
   const handleLogin = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
@@ -21,26 +24,30 @@ function Login() {
   };
 
   const googleProvider = new GoogleAuthProvider();
-  provider.addScope('https://www.googleapis.com/auth/calendar');
+  provider.addScope("https://www.googleapis.com/auth/calendar");
 
-const loginWithGoogle = async () => {
+  // Handles Log in with google
+  const loginWithGoogle = async () => {
     try {
+
+      // pop up of google sign in
       const result = await signInWithPopup(auth, provider);
 
+      //checks the credentials from the pop up
       const credential = GoogleAuthProvider.credentialFromResult(result);
-      accessToken = credential.accessToken;
+      accessToken = credential.
 
-      // stored in local computer, never do this in a real app
-      localStorage.setItem('googleAccessToken', accessToken);
+      localStorage.setItem("googleAccessToken", accessToken);
 
+      
       const user = result.user;
-      console.log('Logged in user:', user);
       navigate("/dashboard");
 
       // Check if Firestore user doc exists
       const userRef = doc(db, "users", user.uid);
       const userSnap = await getDoc(userRef);
 
+      //if no user create his database
       if (!userSnap.exists()) {
         await setDoc(userRef, {
           name: user.displayName,
@@ -48,7 +55,7 @@ const loginWithGoogle = async () => {
           joined: serverTimestamp(),
         });
       }
-      navigate("/dashboard"); // move this here
+      navigate("/dashboard");
     } catch (error) {
       console.error("Login error:", error.message);
     }

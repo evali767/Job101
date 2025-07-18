@@ -1,6 +1,4 @@
-// page to add new job application to track
 import { useState } from "react";
-// import { useNavigate, useLocation } from 'react-router-dom';
 import { useNavigate, useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { auth, db } from "../firebase";
@@ -9,22 +7,22 @@ import { addDoc, collection } from "firebase/firestore";
 export default function AddApplication() {
   const location = useLocation();
   const jobData = location.state || {};
-
+  //variables for aplication
   const [company, setCompany] = useState(jobData.company || "");
   const [position, setPosition] = useState(jobData.position || "");
-  // assumes user still needs to apply
   const [status, setStatus] = useState("Apply");
   const [link, setUrl] = useState(jobData.link || "");
   const [date, setDate] = useState("");
 
-  // naviagte function to change routes
   const navigate = useNavigate();
 
+  //inputs data towards db
   const handleAplication = async (e) => {
     e.preventDefault();
 
-    const user = auth.currentUser;
+    const user = auth.currentUser; //user id
     try {
+      //applies data to the db
       await addDoc(collection(db, "users", user.uid, "aplications"), {
         company: company,
         position: position,
@@ -32,7 +30,7 @@ export default function AddApplication() {
         link: link,
         date: date,
       });
-      navigate("/dashboard");
+      navigate("/dashboard");//move to dashboard
     } catch (error) {
       alert("updating data error", error);
     }
