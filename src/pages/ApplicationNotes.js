@@ -16,6 +16,7 @@ export default function ApplicationNotes() {
 
     // notes initialized as an array
     const [notes, setNotes] = useState([]) 
+    
     useEffect(()=>{
             const fetchNotes = onAuthStateChanged(auth, async (user) => {
                 try{
