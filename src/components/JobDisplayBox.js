@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 export default function JobDisplayBox({ page, results_per_page, what, onSave }) {
   const [jobs, setJobs] = useState();
 
-  let api = `http://api.adzuna.com/v1/api/jobs/us/search/${page}?app_id=${process.env.REACT_APP_APP_ID}&app_key=${process.env.REACT_APP_APP_KEY}&results_per_page=${results_per_page}&what=${what}&content-type=application/json`;
+  let api = `https://api.adzuna.com/v1/api/jobs/us/search/${page}?app_id=${process.env.REACT_APP_APP_ID}&app_key=${process.env.REACT_APP_APP_KEY}&results_per_page=${results_per_page}&what=${what}&content-type=application/json`;
 
   useEffect(() => {
     try {
