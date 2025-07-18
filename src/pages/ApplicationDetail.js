@@ -7,7 +7,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 
 export default function ApplicationDetail( ) {
-  const { id } = useParams();
+  const { id } = useParams(); //get app ID from URL
   const [company, setCompany] = useState("");
   const [position, setPosition] = useState("");
   const [status, setStatus] = useState("")
@@ -17,7 +17,7 @@ export default function ApplicationDetail( ) {
   
   const navigate = useNavigate();
 
-  // updates job application info by replacing old entry with new formData
+  //fetch app data from db
   useEffect(()=>{
           const fetchData = onAuthStateChanged(auth, async (user) => {
               try{
