@@ -37,10 +37,12 @@ Set up environment variables:
     - [Adzuna](https://developer.adzuna.com/)
     - [Firebase](https://console.firebase.google.com/?pli=1)
 3. Update ```.env``` file with your credentials:
-    ```
+    ```bash
+    # Adzuna api keys
     REACT_APP_APP_KEY=
     REACT_APP_APP_ID=
 
+    # Firebase api keys
     REACT_APP_FIREBASE_API_KEY=
     REACT_APP_FIREBASE_AUTH_DOMAIN=
     REACT_APP_FIREBASE_PROJECT_ID=
