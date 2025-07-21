@@ -19,15 +19,15 @@ This project is a React-based web application with [Firebase](https://console.fi
 ## Setup
 
 Clone the repository:
-```
+```bash
 git clone https://github.com/evali767/Job101.git
 ```
 Navigate to project directory:
-```
+```bash
 cd Job101
 ```
 Install dependencies:
-```
+```bash
 npm install
 ```
 Set up environment variables:
