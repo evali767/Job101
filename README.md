@@ -56,3 +56,5 @@ Run the app:
 npm start
 ```
 
+## Notes
+- For Google Calendar to work properly, make sure to **sign in with Google**. Regular email/password sign-in will not be able to access tokens necessary to interact with the Google api.
