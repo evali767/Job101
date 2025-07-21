@@ -21,7 +21,6 @@ This project is a React-based web application with [Firebase](https://console.fi
 Clone the repository:
 ```
 git clone https://github.com/evali767/Job101.git
-cd Job101
 ```
 Navigate to project directory:
 ```
