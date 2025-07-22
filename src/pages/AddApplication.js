@@ -4,6 +4,8 @@ import Navbar from "../components/Navbar";
 import { auth, db } from "../firebase";
 import { addDoc, collection } from "firebase/firestore";
 
+// This page allows users to track new job applications.
+// Users can navigate to this page from the Dashboard or Job Search pages
 export default function AddApplication() {
   const location = useLocation();
   const jobData = location.state || {};

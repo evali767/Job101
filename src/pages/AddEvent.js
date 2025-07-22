@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 
+// This page allows users to add a new Calendar event from the Calendar page
 // receive setApplications as a prop so that main applications list can be updated when new one is added
 export default function AddEvent({ setApplications }) {
     // state management

@@ -8,6 +8,8 @@ import { Dropdown, DropdownButton, DropdownItem, DropdownItems } from "../compon
 const maxResultsOptions = [5, 10, 20, 40, 50, 100];
 const defaultCalendarResults = 20;
 
+// This page displays upcoming events from a user's Google Calendar account. Users can also create new events.
+// Users can navigate to this page from the Navbar.
 export default function Calendar() {
   const [events, setEvents] = useState([]);
   const accessToken = localStorage.getItem('googleAccessToken');

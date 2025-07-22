@@ -6,6 +6,7 @@ import { getDocs, collection } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 
 
+// This is  the Dashboard page which displays the tracked job applications associated with the user's account.
 export default function Dashboard() {
     // calculate stats from application status data
     const [applications, setApplications] = useState([]);

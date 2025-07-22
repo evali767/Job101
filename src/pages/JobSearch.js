@@ -8,6 +8,7 @@ import { Dropdown, DropdownButton, DropdownItem, DropdownItems } from '../compon
 const resultsPerPageOptions = [5, 10, 20, 30, 40, 50, 100];
 const defaultResultsPerPage = 50;
 
+// This page allows users to search for new jobs based on a search term. 
 export default function JobSearch() {
   const [input, setInput] = useState("js developer");
   const [resultsPerPage, setResultsPerPage] = useState(defaultResultsPerPage);

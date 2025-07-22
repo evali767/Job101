@@ -31,7 +31,7 @@ Install dependencies:
 npm install
 ```
 Set up environment variables:
-1. Create a .env file in the root directory
+1. Create a ```.env``` file in the root directory
 2. Obtain API Keys:
     - [Google Calendar](https://developers.google.com/workspace/calendar/api/guides/overview)
     - [Adzuna](https://developer.adzuna.com/)

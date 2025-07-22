@@ -6,6 +6,9 @@ import { auth, db } from "../firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 
+// This page allows users to view details about a specific job application.
+// Users can navigate to this page by clicking the company of a tracked application.
+// Options such as editing details and creating notes are displayed to user.
 export default function ApplicationDetail() {
   //All variables needed
   const { id } = useParams(); //id for the collection in use
