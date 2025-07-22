@@ -4,6 +4,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
+// This page allows users to sign up for the website.
 function Signup() {
   //variables
   const [email, setEmail] = useState("");

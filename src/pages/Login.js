@@ -6,6 +6,7 @@ import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 
 export let accessToken = undefined;
 
+// This page allows users to login to the website.
 function Login() {
   //variables for log in
   const [email, setEmail] = useState("");

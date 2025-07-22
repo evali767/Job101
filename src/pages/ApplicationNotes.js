@@ -6,6 +6,8 @@ import { auth, db } from "../firebase";
 import { getDocs, collection, addDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 
+// This page displays the notes of a specific application.
+// Users can create new notes or view old ones.
 export default function ApplicationNotes() {
   const { id } = useParams(); //get app ID from URL
   const navigate = useNavigate();
