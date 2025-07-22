@@ -9,6 +9,8 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [error, setError] = useState("");
+
   const navigate = useNavigate();
 
   // Creates user profile from email
@@ -35,13 +37,13 @@ function Signup() {
       
       switch (errorCode) {
         case "auth/weak-password":
-          alert("Password is too weak. It should be at least 6 characters.");
+          setError("Password is too weak. It should be at least 6 characters.");
           break;
         case "auth/invalid-email":
-          alert("Invalid email address.");
+          setError("Invalid email address.");
           break;
         default:
-          alert("Signup error: " + errorMessage);
+          setError("Signup error: " + errorMessage);
           break;
       }
     }
@@ -49,13 +51,16 @@ function Signup() {
 
   //checks the fields are filled
   const handleSignup = async () => {
-    if (!email || !password || !name) return alert("Please fill in all fields");
+    if (!email || !password || !name) return setError("Please fill in all fields");
     await SignUpUser(email, name, password);
   };
 
   return (
     <div className="login-container">
       <h2>Sign Up</h2>
+      {error && 
+        <p style={{color: "red"}}>{error}</p>
+      }
       <input placeholder="Name" onChange={(e) => setName(e.target.value)} />
       <input placeholder="email" onChange={(e) => setEmail(e.target.value)} />
       <input
