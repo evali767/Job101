@@ -11,6 +11,8 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [error, setError] = useState("");
+
   const navigate = useNavigate();
 
   // Handles Login
@@ -19,7 +21,7 @@ function Login() {
       await signInWithEmailAndPassword(auth, email, password);
       navigate("/dashboard");
     } catch (error) {
-      alert("Login error: " + error.message);
+      setError(error.message)
     }
   };
 
@@ -64,6 +66,9 @@ function Login() {
   return (
     <div className="login-container">
       <h2>Login</h2>
+      {error && 
+        <p style={{color: "red"}}>{error}</p>
+      }
       <input
         placeholder="Email"
         onChange={(e) => setEmail(e.target.value)}
