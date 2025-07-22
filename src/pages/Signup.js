@@ -29,9 +29,21 @@ function Signup() {
       });
       navigate("/dashboard");
     } catch (error) {
-      console.error("Signup error:", error.message);
-      alert("Signup error: ");
-      navigate("/");
+      //gives an error message based on the type of error
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      
+      switch (errorCode) {
+        case "auth/weak-password":
+          alert("Password is too weak. It should be at least 6 characters.");
+          break;
+        case "auth/invalid-email":
+          alert("Invalid email address.");
+          break;
+        default:
+          alert("Signup error: " + errorMessage);
+          break;
+      }
     }
   };
 
